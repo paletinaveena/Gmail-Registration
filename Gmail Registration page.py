@@ -15,7 +15,7 @@
 # <img src = "https://i1.wp.com/www.scorershub.com/wp-content/uploads/2019/06/create-Gmail-accountb-compressor.png?w=910&ssl=1">
 
 username = ['Sowmya144'  ,'Surekha555','Suresh764','Koushika' ,'Krish24', 'Sumita82', 'Nikitha', 'Satyam']
-password = ['passcode','gmailpass' ,'pvsuresh1' ,'codemail' ,'Apassis', 'passmail', 'Nobitha', 'codepass']
+password = ['Passcode1','Gmailpass2' ,'Pvsuresh1' ,'Codemail3' ,'Apassis4', 'passMail5', 'Nobitha6', 'Codepass7']
 phone_no = ['1234567890' ,'9876543210' ,'3456789876' ,'2345678987' ,'9876543212' ,'6263332517' ,'1234567890' ,'9876543210']
 gender   = ['Female' ,'Female' ,'Male' ,'Female' ,'Male' ,'Female' ,'Female' ,'Male']
 fname    = ['Sowmya'  ,'Surekha' ,'Suresh' ,'Koushika' ,'Krishna' , 'Sumita' , 'Nikitha' , 'Satyam']
