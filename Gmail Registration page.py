@@ -10,12 +10,9 @@
 # 
 # 1. uniqueness of gmail id
 # 2. security of passwords
-# 3. otp management
+# 3. OTP management
 # 4. storing data
 # <img src = "https://i1.wp.com/www.scorershub.com/wp-content/uploads/2019/06/create-Gmail-accountb-compressor.png?w=910&ssl=1">
-
-# In[1]:
-
 
 username = ['Sowmya144'  ,'Surekha555','Suresh764','Koushika' ,'Krish24', 'Sumita82', 'Nikitha', 'Satyam']
 password = ['passcode','gmailpass' ,'pvsuresh1' ,'codemail' ,'Apassis', 'passmail', 'Nobitha', 'codepass']
@@ -26,239 +23,205 @@ lname    = ['Sri' ,'Shukla' ,'Paleti' ,'Retu' ,'Sai' ,'Sri' ,'Sai' ,'Kumar']
 dob      = ['27-Jul-2003', '12-Dec-1975','23-Dec-1970' ,'13-May-2001' ,'23-Jun-1997' ,'20-Apr-1997' ,'23-May-1987' ,'10-Mar-1996']
 
 
-# In[2]:
-
-
-sample_data = {'username':username, 'password' : password, 'phone_no' : phone_no , 'gender' : gender , 'fname' : fname,
+existed_data = {'username':username, 'password' : password, 'phone_no' : phone_no , 'gender' : gender , 'fname' : fname,
                'lname' : lname, 'dob' :dob}
 
 
-# In[3]:
-
-
-sample_data.keys()
-
-
-# In[4]:
-
-
-sample_data['username']
-
-
-# In[5]:
-
-
 import pandas as pd 
-df = pd.DataFrame(sample_data)
+df = pd.DataFrame(existed_data)
 
-
-# In[6]:
-
-
-df
-
-
-# In[7]:
+df # presentation of data
 
 
 import seaborn as sns 
-sns.countplot(x = 'gender', data = df)
+sns.countplot(x = 'gender', data = df)  # Statistics of gender
 
 
-# #### Function for taking fname and lname
+# #### Function for first name and last name
 
-# In[8]:
-
-
+def checkName(name): # check the name whether it contains only alphabets or not 
+    if name.isalpha() and name != '':
+        return True
+    return False
+  
 firstname = [] ; lastname = []
 def flname():
     first_name = input('Enter First Name : ')
-    while True:
-        if first_name == '':
-            break
-        else:
-            last_name = input('Enter Last Name :')
-            firstname.append(first_name)
-            lastname.append(last_name)
-            if last_name != '':
-                break
-
-
-# #### Fucntion for taking usernames and passwords
-
-# In[9]:
-
-
-user = [] ; pas = []
-def user_pass():
-    raw_user_name = input("Enter Username ['xyz@gmail.com'] : ").split('@gmail.com')
-    if raw_user_name[0] in username:
-        print('username already exists.')   
+    if checkName(first_name):
+        last_name = input('Enter Last Name :')
+        if checkName(last_name) != True:
+            print("Invalid Last Name Input")
+            return
+        firstname.append(first_name)
+        lastname.append(last_name)
     else:
+        print("Invalid First Name Input")
+
+
+# #### Function for usernames and passwords
+
+def checkUserName(raw_user_name): # To check uniqueness
+    if raw_user_name in username:
+        return False
+    return True
+  
+def checkpassword(password): # To check validity 
+    if len(password) < 8:
+        return False
+    if password.isalnum() != True:
+        return False
+    return True
+
+newusername = [] ; password = []
+def username_password():
+    raw_user_name = input("Enter Username: ").split('@gmail.com')
+    if checkUserName(raw_user_name[0]):
         Password = input('Enter Password: ')
-        if len(Password)> 8:
-            if Password.isalnum() != True:
-                print('Enter uppercases, lowercases and use atleast 1 number')
-            else:
-                user.append(raw_user_name[0])
-                pas.append(Password)
+        if checkpassword(Password):
+            newusername.append(raw_user_name[0])
+            password.append(Password)
         else:
-            print('use atleast 8 characters.')
+            print("Password must contain 8 characters, uppercases, lowercases and atleast 1 number")
+    else:
+        print('username already exists.')
 
 
-# In[12]:
+# #### Function for dob, gender, phonenumber.
 
-
-user_pass()
-
-
-# #### Function to take dob, gender, phonenumber.
-
-# In[13]:
-
-
-Date = [] 
-def dgp():
-    import datetime, random 
+from datetime import date
+def checkYear(year):  # To check validity of Year
+    today = date.today()
+    if year > today.year:
+        return False
+    return True
+  
+def checkMonth(month): # To check validity of Month
     m = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-    day = int(input('Enter Birth Date : [12, 23, 44...] '))
-    if day > 31:
-        print('Invalid Input.')
+    if month in m:
+        return True
+    return False
+  
+import calendar
+def checkDay(day, month, year): # To check validity of no of days in entered month
+    num_days = calendar.monthrange(year, month)[1]
+    if day > num_days:
+        return False
+    return True
+  
+from datetime import date
+def checkAge(birthDate): # To check whether candidate is above 13 years or not
+    today = date.today()
+    age = today.year - birthDate.year - ((today.month, today.day) < (birthDate.month, birthDate.day))
+    if age >= 13:
+        return True
     else:
-        month = input('Enter Birth Month : [Jan, Feb, Mar, ...] ').capitalize()
-        if month in m:
-            #x = datetime.datetime.now()
-            #Y = x.strftime('%y')
-            year = int(input('Enter Birth year : [1987, 1956, 2013,...] '))
-            if year >= 2020:
-                print('Invalid Year')
-            else:
-                DOB = str(day) + '-' + str(month) + '-' + str(year) 
-                Date.append(DOB)
-        else:
-            print('Enter valid Month Name')
-
-
-# In[14]:
-
-
-phonenum = []
-def mobile():
-    import random 
-    MOB = input('Enter 10 Digit Mobile Number : ')
-    if MOB not in phonenum:
-        if len(MOB) != 10:
-            print('Invalid Input')
-        else:
-            code_generation = random.randint(627463,736453)
-            code = 'G-'+ str(code_generation) + 'is your One Time Google Verification Code.'
-            print('Enter the otp sent to your mobile number ending with ',MOB[-3:])
-            print(code)
-            otp_enter = input('Enter OTP : ')
-            if otp_enter == str('G-'+ str(code_generation)):
-                print('Please accept the Terms & Conditions to create your account.')
-                answer = input('Accept the T&Cs Enter 1 : ')
-                if answer != '1':
-                    print('Invalid Response')
+        return False
+      
+import datetime
+Date = [] 
+def dob(): # DOB function
+    year = int(input('Enter Birth year [1987, 1956, 2013,...] :'))
+    if checkYear(year):
+        month = input('Enter Birth Month [Jan, Feb, Mar, ...] :').capitalize()
+        if checkMonth(month):
+            day = int(input('Enter Birth Date [12, 23, 44...] :'))
+            datetime_object = datetime.datetime.strptime(month, "%b") # converts month into month number
+            month_num = datetime_object.month
+            if checkDay(day, month_num, year):
+                birthDate = date(year, month_num, day)
+                if checkAge(birthDate):
+                    DOB = str(day) + '-' + str(month) + '-' + str(year)
+                    Date.append(DOB)
                 else:
-                    phonenum.append(MOB)
-                    print('Account Created Succesfully.')
+                    print("You must be atleast 13 years")
             else:
-                print('Invalid OTP.')
+                print("Invalid Day Input")
+        else:
+            print("Invalid Month Input")
     else:
-        print('Number already exists.')
-
-
-# In[15]:
-
-
+        print("Invalid Year Input")
+        
 Gender = []
-def gender():
+def gender(): # Gender function
     print('Enter Gender : ["Male, Female"] : ')
     gen_int = input('Enter Gender : ').capitalize()
     if gen_int == 'Male' or 'Female':
         Gender.append(gen_int)
     else:
         print('Invalid Input')
+        
+def checkLength(MOB): # To check length of mobile number
+    if len(MOB) != 10:
+        return False
+    return True
+ 
+import random
+def generateOTP(): # To generate OTP
+    return random.randint(627463,736453)
+ 
+def checkOTP(OTP_Generated): # To check OTP
+    otp_enter = int(input('Enter OTP : G-'))
+    if otp_enter == OTP_Generated:
+        return True
+    return False
 
-
-# In[16]:
-
+def TandC(): # To accept Terms and Conditions
+    print('Please accept the Terms & Conditions to create your account.')
+    answer = input('Accept the T&Cs Enter 1 : ')
+    if answer != '1':
+        return False
+    return True
+ 
+phone_num = []
+def mobile():
+    MOB = input('Enter 10 Digit Mobile Number : ')
+    if MOB not in phone_no:
+        if MOB not in phone_num:
+            if checkLength(MOB):
+                OTP_Generated = generateOTP()
+                code = 'G-'+ str(OTP_Generated) + ' is your One Time Google Verification Code.'
+                print('Enter the OTP sent to your mobile number ending with ', MOB[-3:])
+                print(code)
+                if checkOTP(OTP_Generated):
+                    if TandC():
+                        phone_num.append(MOB)
+                        print('Account Created Succesfully.')
+                    else:
+                        print('Invalid Response')
+                else:
+                    print('Invalid OTP.')
+            else:
+                print("Invalid Input")
+        else:
+            print('Number already exists.')
+    else:
+        print("Another Account with this number exists")
 
 flname()
 
+dob()
 
-# In[17]:
-
-
-dgp()
-
-
-# In[18]:
-
+username_password()
 
 gender()
 
-
-# In[19]:
-
-
 mobile()
 
-
-# In[20]:
-
-
-phonenum.append('9849966528')
-firstname, lastname, Date, phonenum, Gender , user, pas
-
-
-# In[ ]:
-
-
-data2 = {'username':user, 'password' : pas, 'phone_no' : phonenum , 'gender' : Gender , 'fname' : firstname,
+data2 = {'username':newusername, 'password' : password, 'phone_no' : phone_num , 'gender' : Gender , 'fname' : firstname,
                'lname' : lastname, 'dob' :Date}
-
-
-# In[ ]:
-
 
 df2 = pd.DataFrame(data2)
 
-
-# In[ ]:
-
-
 df2
-
-
-# In[ ]:
-
-
-df
-
-
-# In[ ]:
-
 
 final_data = pd.concat([df,df2])
 
-
-# In[ ]:
-
-
 final_data
-
-
-# In[24]:
-
 
 day_data = final_data.to_csv('bank-data.csv')
 
 
-# In[25]:
-
-
+import time
 login_success = [] ; login_failed = []
 def login():
     bank = pd.read_csv('bank-data.csv', index_col = 'username')
@@ -267,13 +230,11 @@ def login():
     if em in bank.index.to_list():
         PASS = input('Enter Password : ')
         if bank['password'][em] == PASS:
-            import time
             t = time.localtime()
             currenttime = time.strftime('%H : %M: %S', t)
             print('Login Successfull.')
             login_success.append(str(em) + ' at ' + str(currenttime))
         else:
-            import time
             t = time.localtime()
             currenttime = time.strftime('%H : %M: %S', t)
             print('Incorrect Password')
@@ -282,143 +243,12 @@ def login():
         print('EMAIL doesnot exist!.')
 
 
-# In[26]:
-
-
 login()
 
-
-# In[27]:
-
-
-login_success, login_failed
-
-
-# In[28]:
-
-
-bank = pd.read_csv('bank-data.csv', index_col = 'username')
-
-
-# In[29]:
-
-
-bank
-
-
-# In[30]:
-
-
-bank.columns
-
-
-# In[31]:
-
-
-bank.index
-
-
-# In[32]:
-
-
-list(bank.index)
-
-
-# In[33]:
-
-
-bank['password']['Sowmya144'] == 'passcode'
-
-
-# In[34]:
-
-
-bank['dob']['Sowmya144']
-
-
-# In[35]:
-
-
 login()
-
-
-# In[36]:
-
 
 login_success
 
-
-# In[37]:
-
-
 login_failed
 
-
-# In[38]:
-
-
-login()
-
-
-# In[39]:
-
-
 data = 'https://github.com/paletinaveena/Gmail-Registration/blob/main/Gmail_members_details.csv'
-
-
-# In[40]:
-
-
-import webbrowser as wb 
-wb.open('https://github.com/paletinaveena/Gmail-Registration/blob/main/Gmail_members_details.csv')
-
-
-# In[41]:
-
-
-help('url')
-
-
-# In[42]:
-
-
-import urllib.request
-response = urllib.request.urlopen('https://github.com/paletinaveena/Gmail-Registration/blob/main/Gmail_members_details.csv')
-html = response.read()
-
-
-# In[43]:
-
-
-url = 'https://github.com/paletinaveena/Gmail-Registration/blob/main/Gmail_members_details.csv'
-
-
-# In[44]:
-
-
-html
-
-
-# In[45]:
-
-
-read = pd.read_html(url)
-
-
-# In[46]:
-
-
-read
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
